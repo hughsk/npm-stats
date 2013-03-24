@@ -1,0 +1,32 @@
+{
+  "name": "npm-stats",
+  "version": "0.0.1",
+  "description": "Convenience module for getting back data from an NPM registry",
+  "main": "index.js",
+  "dependencies": {
+    "event-stream": "~3.0.12",
+    "JSONStream": "~0.6.2",
+    "nano": "~3.3.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hughsk/npm-stats.git"
+  },
+  "keywords": [
+    "modules",
+    "npm",
+    "data",
+    "information",
+    "analytics",
+    "statistics",
+    "stats",
+    "users",
+    "keywords"
+  ],
+  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughskennedy.com/)",
+  "license": "MIT"
+}

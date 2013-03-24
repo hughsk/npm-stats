@@ -1,0 +1,73 @@
+var es = require('event-stream')
+  , jsonstream = require('JSONStream')
+
+function passthrough(data) {
+  return data
+}
+
+var stats = module.exports = function(registry, mainopts) {
+  mainopts = mainopts || {}
+
+  var nano = require('nano')(registry || 'http://isaacs.iriscouch.com/')
+    , modules = nano.db.use(mainopts.modules || 'registry')
+    , downloads = nano.db.use(mainopts.downloads || 'downloads')
+    , users = nano.db.use(mainopts.users || 'public_users')
+
+  var Keyword = require('./lib/keyword')(modules, downloads, users, mainopts)
+    , Module = require('./lib/module')(modules, downloads, users, mainopts)
+    , User = require('./lib/user')(modules, downloads, users, mainopts)
+
+  ;[Keyword, User, Module].forEach(function(model) {
+    Object.keys(model.prototype).forEach(function(name) {
+      var method = model.prototype[name]
+
+      model.prototype[name] = function(options, callback) {
+        options = options || {}
+
+        if (typeof options === 'string') {
+          options = { string: options }
+        }
+        if (typeof options === 'function') {
+          callback = options
+          options = {}
+        }
+
+        if (!method.select || mainopts.dirty) {
+          return method.call(this, options, callback)
+        }
+
+        var buffer = ''
+        var write = callback ? function write(data) {
+          buffer += data
+          this.queue(data)
+        } : function(data) {
+          this.queue(data)
+        }
+
+        var stream = es.pipeline(
+            method.call(this, options)
+          , jsonstream.parse(method.select)
+          , es.mapSync(method.map || passthrough)
+          , method.single
+            ? es.stringify()
+            : jsonstream.stringify()
+          , es.through(write, end)
+        )
+
+        if (callback) stream.on('error', callback)
+
+        function end() {
+          if (callback) return callback(null, JSON.parse(buffer))
+        }
+
+        return stream
+      }
+    })
+  })
+
+  return {
+      user: User
+    , module: Module
+    , keyword: Keyword
+  }
+}
