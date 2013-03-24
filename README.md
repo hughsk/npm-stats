@@ -1,8 +1,8 @@
 # npm-stats #
 
 Convenience module for getting back data from an NPM registry.
-All of the methods return a JSON stream, or take a callback.
-Where specified, some methods of them take an optional options object as well.
+All of the methods return a JSON stream, and/or take a callback.
+Where specified, some methods take an optional options object as well.
 
 ## API ##
 
