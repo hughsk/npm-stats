@@ -57,7 +57,18 @@ var stats = module.exports = function(registry, mainopts) {
         if (callback) stream.on('error', callback)
 
         function end() {
-          if (callback) return callback(null, JSON.parse(buffer))
+          var self = this
+
+          if (callback) {
+            try {
+              callback(null, JSON.parse(buffer))
+            } catch(e) {
+              callback(e)
+            }
+            return
+          }
+
+          this.queue(null)
         }
 
         return stream
