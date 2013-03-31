@@ -21,6 +21,10 @@ Options:
   to "downloads".
 * `users`: the database to use for retrieving users. Defaults to "users".
 
+**registry.list()**
+
+Returns an array containing every module currently in the chosen NPM registry.
+
 ### Keywords ###
 
 **registry.keyword(name).count()**
