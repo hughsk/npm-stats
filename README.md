@@ -25,6 +25,16 @@ Options:
 
 Returns an array containing every module currently in the chosen NPM registry.
 
+**registry.listByDate(options)**
+
+Get a list of each module in the chosen NPM registry, sorted by date last
+updated, in ascending order.
+
+You can also pass the following options:
+
+* `since`: only include modules updated since this date.
+* `until`: only include modules updated before this date.
+
 ### Keywords ###
 
 **registry.keyword(name).count()**
