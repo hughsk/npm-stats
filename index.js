@@ -8,7 +8,7 @@ function passthrough(data) {
 var stats = module.exports = function(registry, mainopts) {
   mainopts = mainopts || {}
 
-  var nano = require('nano')(registry || 'http://isaacs.iriscouch.com/')
+  var nano = require('nano')(registry || 'https://skimdb.npmjs.com/')
     , modules = nano.db.use(mainopts.modules || 'registry')
     , downloads = nano.db.use(mainopts.downloads || 'downloads')
     , users = nano.db.use(mainopts.users || 'public_users')
