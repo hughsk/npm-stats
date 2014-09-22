@@ -66,6 +66,11 @@ Get a list of the modules a user has starred.
 Returns the data normally accessible from
 `https://registry.npmjs.org/:pkg`.
 
+**registry.module(name).version(version)**
+
+Returns the data normally accessible from
+`http://registry.npmjs.org/:pkg/:version`.
+
 **registry.module(name).downloads()**
 
 Returns a list of download counts for the module, by date, e.g.:
