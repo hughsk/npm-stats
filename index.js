@@ -1,22 +1,43 @@
 var es = require('event-stream')
+  , reducestream = require('stream-reduce')
   , jsonstream = require('JSONStream')
+  , merge = require('./lib/utils').merge
 
 function passthrough(data) {
   return data
 }
 
-var stats = module.exports = function(registry, mainopts) {
-  mainopts = mainopts || {}
+module.exports = exports = stats
 
-  var nano = require('nano')(registry || 'https://skimdb.npmjs.com/')
-    , modules = nano.db.use(mainopts.modules || 'registry')
-    , downloads = nano.db.use(mainopts.downloads || 'downloads')
-    , users = nano.db.use(mainopts.users || 'public_users')
+// pristine copy of default options
+var DEFAULTS = {
+    registry: 'https://skimdb.npmjs.com/',
+    modules: 'registry',
+    // https://api.npmjs.org/downloads/ :detail=(point|range) / :period=(last-month|last-week|last-day|YYYY-MM-DD:YYYY-MM-DD) / :package?
+    downloads: 'https://api.npmjs.org/downloads',
+    users: 'public_users',
+    dirty: false
+}
 
-  var Keyword = require('./lib/keyword')(modules, downloads, users, mainopts)
-    , Module = require('./lib/module')(modules, downloads, users, mainopts)
-    , User = require('./lib/user')(modules, downloads, users, mainopts)
-    , Registry = require('./lib/registry')(modules, downloads, users, mainopts)
+// inherit to ensure original defaults peek through if keys get deleted
+var GLOBAL_DEFAULTS = merge(Object.create(DEFAULTS), DEFAULTS)
+
+exports.defaults = function(defaults){
+  return merge(GLOBAL_DEFAULTS, defaults)
+}
+
+function stats(registry, mainopts) {
+  mainopts = merge({}, GLOBAL_DEFAULTS, mainopts, {registry:registry});
+  
+  var nano = require('nano')(mainopts.registry)
+    , modules = nano.db.use(mainopts.modules)
+    , users = nano.db.use(mainopts.users)
+    , downloadUrl = mainopts.downloads
+
+  var Keyword = require('./lib/keyword')(modules, downloadUrl, users, mainopts)
+    , Module = require('./lib/module')(modules, downloadUrl, users, mainopts)
+    , User = require('./lib/user')(modules, downloadUrl, users, mainopts)
+    , Registry = require('./lib/registry')(modules, downloadUrl, users, mainopts)
 
   function modifier(method) {
     return function(options, callback) {
@@ -46,6 +67,9 @@ var stats = module.exports = function(registry, mainopts) {
           method.call(this, options)
         , jsonstream.parse(method.select)
         , es.mapSync(method.map || passthrough)
+        , method.reduce
+          ? reducestream(method.reduce, method.reduce.start)
+          : es.mapSync(passthrough)
         , method.single
           ? es.stringify()
           : jsonstream.stringify('[', ',', ']')
@@ -89,3 +113,4 @@ var stats = module.exports = function(registry, mainopts) {
 
   return registry
 }
+
