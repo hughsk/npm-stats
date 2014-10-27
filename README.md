@@ -91,6 +91,10 @@ Days without a download are omitted. Options:
 
 Returns a list of the users who have starred a module.
 
+**registry.module(name).dependents()**
+
+Returns a list of modules that depend on a module.
+
 **registry.module(name).latest()**
 
 Returns the latest `package.json` file for a module.
