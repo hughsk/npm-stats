@@ -9,7 +9,8 @@
     "stream-reduce": "~1.0.3",
     "through": "~2.3.6",
     "nano": "~3.3.8",
-    "request": "~2.45.0"
+    "request": "~2.45.0",
+    "lodash.merge" : ">= 2.4.1"
   },
   "devDependencies": {},
   "scripts": {

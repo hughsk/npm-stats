@@ -1,7 +1,7 @@
 var es = require('event-stream')
   , reducestream = require('stream-reduce')
   , jsonstream = require('JSONStream')
-  , merge = require('./lib/utils').merge
+  , merge = require('lodash.merge')
 
 function passthrough(data) {
   return data
