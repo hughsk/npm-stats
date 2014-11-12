@@ -1,6 +1,6 @@
 {
   "name": "npm-stats",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Convenience module for getting back data from an NPM registry",
   "main": "index.js",
   "dependencies": {
@@ -10,7 +10,7 @@
     "through": "~2.3.6",
     "nano": "~3.3.8",
     "request": "~2.45.0",
-    "lodash.merge" : ">= 2.4.1"
+    "lodash.merge": ">= 2.4.1"
   },
   "devDependencies": {},
   "scripts": {
