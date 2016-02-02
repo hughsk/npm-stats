@@ -10,7 +10,7 @@ require('chai').should()
 describe('npm-stats', function () {
   describe('registry', function () {
     describe('listByDate()', function () {
-      it('returns modules published a given date', function (done) {
+      it('returns modules published before a given date', function (done) {
         npmStats().listByDate({since: moment().subtract(1, 'hour').toDate()}, function (err, packages) {
           expect(err).to.equal(null)
           packages.length.should.be.gt(0)
