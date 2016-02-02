@@ -1,6 +1,6 @@
 {
   "name": "npm-stats",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Convenience module for getting back data from an NPM registry",
   "main": "index.js",
   "dependencies": {
