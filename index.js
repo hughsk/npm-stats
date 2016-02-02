@@ -27,9 +27,15 @@ exports.defaults = function(defaults){
 }
 
 function stats(registry, mainopts) {
+  if (typeof registry === 'object') {
+    mainopts = registry
+    registry = undefined
+  }
+
   mainopts = merge({}, GLOBAL_DEFAULTS, mainopts, {registry:registry});
-  
-  var nano = require('nano')(mainopts.registry)
+  var nanoConf = merge({url: mainopts.registry}, mainopts.nano)
+
+  var nano = require('nano')(nanoConf)
     , modules = nano.db.use(mainopts.modules)
     , users = nano.db.use(mainopts.users)
     , downloadUrl = mainopts.downloads
@@ -113,4 +119,3 @@ function stats(registry, mainopts) {
 
   return registry
 }
-
