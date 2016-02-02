@@ -4,17 +4,20 @@
   "description": "Convenience module for getting back data from an NPM registry",
   "main": "index.js",
   "dependencies": {
-    "event-stream": "~3.0.12",
     "JSONStream": "~0.6.2",
-    "stream-reduce": "~1.0.3",
-    "through": "~2.3.6",
-    "nano": "~3.3.8",
+    "event-stream": "~3.0.12",
+    "lodash.merge": "~3.3.2",
+    "nano": "^6.2.0",
     "request": "~2.45.0",
-    "lodash.merge": "~3.3.2"
+    "stream-reduce": "~1.0.3",
+    "through": "~2.3.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "tap": "^5.4.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap --coverage ./test.js"
   },
   "repository": {
     "type": "git",
