@@ -52,6 +52,16 @@ describe('npm-stats', function () {
         })
       })
     })
+
+    describe('size()', function () {
+      it('return the size of a given module', function (done) {
+        npmStats().module('lodash').size(function (err, size) {
+          expect(err).to.equal(null)
+          size.size.should.be.gt(0)
+          return done()
+        })
+      })
+    })
   })
 
   describe('user', function () {
